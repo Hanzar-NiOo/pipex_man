@@ -1,0 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hnioo <hnioo@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/25 12:11:33 by hnioo             #+#    #+#             */
+/*   Updated: 2026/01/27 23:43:53 by hnioo            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PIPEX_H
+# define PIPEX_H
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+# define CMD_SUCCESS 1
+# define CMD_FAIL 0
+# define CMD_EXEC_ERROR -1
+# define EXIT_CMD_NOT_EXECUTABLE 126
+# define EXIT_CMD_NOT_FOUND 127
+
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include "libft.h"
+
+# include <stdio.h>
+
+void	ft_err_exit(char *err_msg);
+int		ft_argc_check(int argc);
+void	ft_pip_f_process(char *cmd, int fd, int pip[2], char **env);
+void	ft_pip_s_process(char *cmd, int fd, int pip2[2], char **env);
+
+#endif
