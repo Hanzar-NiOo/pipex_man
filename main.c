@@ -20,11 +20,11 @@ int	main(int argc, char **argv, char **env)
 
 	ft_argc_check(argc);
 	fd_infile = open(argv[1], O_RDONLY);
-	// if (fd_infile == -1)
-	// 	ft_err_exit("Infile : File not found");
+	if (fd_infile == -1)
+		ft_exit_failure(argv[1], EXISTENCE, EXIT_FAILURE);
 	fd_outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	// if (fd_outfile == -1)
-	// 	ft_err_exit("Outfile : File not found");
+	if (fd_outfile == -1)
+		ft_exit_failure(argv[4], EXISTENCE, EXIT_FAILURE);
 	// if (pipe(pip) == -1)
 	// 	ft_err_exit("Pipe : Pipe failed");
 	ft_pip_f_process(argv[2], fd_infile, pip, env);

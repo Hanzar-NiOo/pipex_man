@@ -29,7 +29,7 @@ typedef enum s_error
 	// PIPE,
 	// FORK,
 	// DUP2,
-	// EXISTENCE,
+	EXISTENCE,
 	// PERMISSION,	
 	// COMMAND,
 	// DIRECTORY,
@@ -43,6 +43,7 @@ typedef enum s_error
 // # include <stdio.h>
 
 void	ft_log_error(char *str, t_error type);
+void	ft_exit_failure(char *str, t_error type, int code);
 void	ft_log_guide_instructions(void);
 // void	ft_err_exit(char *err_msg);
 int		ft_argc_check(int argc);

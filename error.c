@@ -20,13 +20,13 @@ void	ft_err_exit(char *err_msg)
 	exit (1);
 }
 
-// void	exit_failure(t_pipex *data, char *str, t_error type, int code)
-// {
-// 	log_error(str, type);
-// 	close_fd(data);
-// 	free_char_double_pointer(data->path);
-// 	exit(code);
-// }
+void	ft_exit_failure(char *str, t_error type, int code)
+{
+	ft_log_error(str, type);
+	// close_fd(data);
+	// free_char_double_pointer(data->path);
+	exit(code);
+}
 
 // void	exit_success(t_pipex *data, int code)
 // {
@@ -43,8 +43,8 @@ void	ft_log_error(char *str, t_error type)
 		ft_putstr_fd(": Incorrect number of arguments\n", 2);
 	// if (type == MALLOC)
 	// 	ft_putstr_fd(": memory allocation failed\n", STDERR);
-	// if (type == EXISTENCE)
-	// 	ft_putstr_fd(": No such file or directory\n", STDERR);
+	if (type == EXISTENCE)
+		ft_putstr_fd(": No such file or directory\n", 2);
 	// if (type == PERMISSION)
 	// 	ft_putstr_fd(": Permission denied\n", STDERR);
 	// if (type == COMMAND)
