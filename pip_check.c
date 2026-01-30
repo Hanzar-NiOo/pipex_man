@@ -15,6 +15,9 @@
 int	ft_argc_check(int argc)
 {
 	if (argc != 5)
-		ft_err_exit("Arg : Argc must equal to 5.");
+	{
+		ft_log_error("Error", ARGUMENTS);
+		ft_log_guide_instructions();
+	}
 	return (1);
 }

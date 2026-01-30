@@ -30,8 +30,8 @@ static char	**ft_get_paths(char **env)
 		}
 		idx++;
 	}
-	if (!paths)
-		ft_err_exit ("Env : Paths not found");
+	// if (!paths)
+	// 	ft_err_exit ("Env : Paths not found");
 	return (paths);
 }
 
@@ -52,8 +52,8 @@ static char	*ft_get_execve(char *cmd, char **paths)
 			return (exec);
 		idx++;
 	}
-	if (!exec)
-		ft_err_exit ("Pipex : Command not found");
+	// if (!exec)
+	// 	ft_err_exit ("Pipex : Command not found");
 	return (NULL);
 }
 
@@ -73,8 +73,8 @@ void	ft_pip_f_process(char *cmd, int fd, int pip[2], char **env)
 	int	pid;
 
 	pid = fork();
-	if (pid < 0)
-		ft_err_exit("Fork : Resource temporarily unavailable");
+	// if (pid < 0)
+	// 	ft_err_exit("Fork : Resource temporarily unavailable");
 	if (pid == 0)
 	{
 		dup2(fd, STDIN_FILENO);
@@ -91,8 +91,8 @@ void	ft_pip_s_process(char *cmd, int fd, int pip[2], char **env)
 	int	pid;
 
 	pid = fork();
-	if (pid < 0)
-		ft_err_exit("Fork : Resource temporarily unavailable");
+	// if (pid < 0)
+	// 	ft_err_exit("Fork : Resource temporarily unavailable");
 	if (pid == 0)
 	{
 		dup2(pip[0], STDIN_FILENO);

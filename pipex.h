@@ -22,6 +22,19 @@
 // # define EXIT_CMD_NOT_EXECUTABLE 126
 // # define EXIT_CMD_NOT_FOUND 127
 
+typedef enum s_error
+{
+	ARGUMENTS,
+	// MALLOC,
+	// PIPE,
+	// FORK,
+	// DUP2,
+	// EXISTENCE,
+	// PERMISSION,	
+	// COMMAND,
+	// DIRECTORY,
+}	t_error;
+
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
@@ -29,7 +42,9 @@
 
 // # include <stdio.h>
 
-void	ft_err_exit(char *err_msg);
+void	ft_log_error(char *str, t_error type);
+void	ft_log_guide_instructions(void);
+// void	ft_err_exit(char *err_msg);
 int		ft_argc_check(int argc);
 void	ft_pip_f_process(char *cmd, int fd, int pip[2], char **env);
 void	ft_pip_s_process(char *cmd, int fd, int pip2[2], char **env);
