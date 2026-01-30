@@ -22,7 +22,7 @@ int	main(int argc, char **argv, char **env)
 	fd_infile = open(argv[1], O_RDONLY);
 	if (fd_infile == -1)
 		ft_err_exit("Infile : File not found");
-	fd_outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	fd_outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_outfile == -1)
 		ft_err_exit("Outfile : File not found");
 	if (pipe(pip) == -1)

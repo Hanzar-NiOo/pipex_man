@@ -16,18 +16,18 @@
 #  define BUFFER_SIZE 42
 # endif
 
-# define CMD_SUCCESS 1
-# define CMD_FAIL 0
-# define CMD_EXEC_ERROR -1
-# define EXIT_CMD_NOT_EXECUTABLE 126
-# define EXIT_CMD_NOT_FOUND 127
+// # define CMD_SUCCESS 1
+// # define CMD_FAIL 0
+// # define CMD_EXEC_ERROR -1
+// # define EXIT_CMD_NOT_EXECUTABLE 126
+// # define EXIT_CMD_NOT_FOUND 127
 
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
 # include "libft.h"
 
-# include <stdio.h>
+// # include <stdio.h>
 
 void	ft_err_exit(char *err_msg);
 int		ft_argc_check(int argc);
