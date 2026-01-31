@@ -43,6 +43,7 @@ typedef enum s_error
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <stdlib.h>
 # include "libft.h"
 
 # include <stdio.h>
@@ -55,8 +56,8 @@ void	exit_success(int code);
 void	close_fd(int fd_in, int fd_out, int pip[2]);
 // void	ft_err_exit(char *err_msg);
 void	argc_check(int argc);
-int		valid_cmd_arg(char *cmd);
-void	pip_f_process(char *cmd, int fd, int pip[2], char **env);
-void	pip_s_process(char *cmd, int fd, int pip2[2], char **env);
+int		invalid_cmd_arg(char *cmd);
+void	pip_f_process(char *cmd, int fd_in, int pip[2], char **env);
+void	pip_s_process(char *cmd, int pip[2], int fd_out, char **env);
 
 #endif

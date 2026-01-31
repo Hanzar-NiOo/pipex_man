@@ -58,26 +58,27 @@ static void	pip_execve(char *cmd, char **env)
 	char	**args;
 	char	**paths;
 
-	if (!valid_cmd_arg(cmd))
+	if (invalid_cmd_arg(cmd))
 		exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
 	paths = get_paths(env);
 	if (!paths)
 		exit_failure("ft_split() on get_paths()", MALLOC, EXIT_FAILURE);
 	args = ft_split(cmd, ' ');
+	// int	idx = 0;
+	// while (args[idx++])
+	// 	printf("args[%i] = %s\n", idx, args[idx]);
 	if (!args)
 		exit_failure("ft_split()", MALLOC, EXIT_FAILURE);
 	args[0] = get_execve(args[0], paths);
+	// printf("args[0] = %s\n", args[0]);
 	if (!args[0])
 		exit_failure("ft_strjoin()", MALLOC, EXIT_FAILURE);
-	// xxx
 	if (access(args[0], F_OK) == 0)
 	{
 		if (access(args[0], X_OK) == 0)
 		{
 			if(execve(args[0], args, env) == -1)
 				exit_failure(cmd, PERMISSION, EXIT_CMD_NOT_EXECUTABLE);
-			else
-				exit_success(CMD_SUCCESS);
 		}
 		else
 			exit_failure(cmd, COMMAND, EXIT_CMD_NOT_EXECUTABLE);
@@ -86,7 +87,7 @@ static void	pip_execve(char *cmd, char **env)
 		exit_failure(cmd, COMMAND, EXIT_CMD_NOT_EXECUTABLE);
 }
 
-void	pip_f_process(char *cmd, int fd, int pip[2], char **env)
+void	pip_f_process(char *cmd, int fd_in, int pip[2], char **env)
 {
 	int	pid;
 
@@ -95,16 +96,16 @@ void	pip_f_process(char *cmd, int fd, int pip[2], char **env)
 		exit_failure("pip_f_process()", FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
-		if (dup2(fd, STDIN_FILENO) == -1)
+		if (dup2(fd_in, STDIN_FILENO) < 0)
 			exit_failure("pip_f_process()", DUP2, EXIT_FAILURE);
-		if (dup2(pip[1], STDOUT_FILENO) == -1)
+		if (dup2(pip[1], STDOUT_FILENO) < 0)
 			exit_failure("pip_f_process()", DUP2, EXIT_FAILURE);
-		close_fd(fd, '\0', pip);
+		close_fd(fd_in, '\0', pip);
 		pip_execve(cmd, env);
 	}
 }
 
-void	pip_s_process(char *cmd, int fd, int pip[2], char **env)
+void	pip_s_process(char *cmd, int pip[2], int fd_out, char **env)
 {
 	int	pid;
 
@@ -115,9 +116,9 @@ void	pip_s_process(char *cmd, int fd, int pip[2], char **env)
 	{
 		if (dup2(pip[0], STDIN_FILENO) == -1)
 			exit_failure("pip_s_process()", DUP2, EXIT_FAILURE);
-		if (dup2(fd, STDOUT_FILENO) == -1)
+		if (dup2(fd_out, STDOUT_FILENO) == -1)
 			exit_failure("pip_s_process()", DUP2, EXIT_FAILURE);
-		close_fd('\0', fd, pip);
+		close_fd('\0', fd_out, pip);
 		pip_execve(cmd, env);
 	}
 }
