@@ -29,10 +29,7 @@ int	main(int argc, char **argv, char **env)
 		ft_exit_failure(NULL, PIPE, EXIT_FAILURE);
 	ft_pip_f_process(argv[2], fd_infile, pip, env);
 	ft_pip_s_process(argv[3], fd_outfile, pip, env);
-	close(pip[0]);
-	close(pip[1]);
-	close(fd_infile);
-	close(fd_outfile);
+	ft_close_fd(fd_infile, fd_outfile, pip);
 	wait(NULL);
 	wait(NULL);
 	return (0);

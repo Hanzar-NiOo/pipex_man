@@ -31,7 +31,7 @@ int	ft_invalid_cmd_arg(char *cmd)
 	i = 0;
 	while (cmd[i])
 	{
-		if (ft_isprint(cmd[i]) && !ft_iswhitespace(cmd[i]))
+		if (ft_isprint(cmd[i]))
 			return (0);
 		i++;
 	}

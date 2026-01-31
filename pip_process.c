@@ -30,8 +30,6 @@ static char	**ft_get_paths(char **env)
 		}
 		idx++;
 	}
-	if (!paths)
-		ft_log_error("ft_split() from get_path()", MALLOC);
 	return (NULL);
 }
 
@@ -52,42 +50,39 @@ static char	*ft_get_execve(char *cmd, char **paths)
 			return (exec);
 		idx++;
 	}
-	if (!exec)
-		ft_exit_failure(NULL, COMMAND, EXIT_FAILURE);
 	return (NULL);
 }
 
-static int	ft_pip_execve(char *cmd, char **env)
+static void	ft_pip_execve(char *cmd, char **env)
 {
-	int		status;
 	char	**args;
 	char	**paths;
 
+	// if (ft_invalid_cmd_arg(cmd))
+	// 	ft_exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
 	paths = ft_get_paths(env);
 	if (!paths)
-		exit_failure("ft_split() on get_abs_path()", MALLOC, EXIT_FAILURE);
-	if (ft_invalid_cmd_arg(cmd))
-		exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
+		ft_exit_failure("ft_split() on ft_get_paths()", MALLOC, EXIT_FAILURE);
 	args = ft_split(cmd, ' ');
 	if (!args)
-		exit_failure("ft_split() on execute_command()", MALLOC, EXIT_FAILURE);
+		ft_exit_failure("ft_split()", MALLOC, EXIT_FAILURE);
 	args[0] = ft_get_execve(args[0], paths);
-	if (args[0])
-		exit_failure("ft_split() on absolute", MALLOC, EXIT_FAILURE);
+	if (!args[0])
+		ft_exit_failure(NULL, COMMAND, EXIT_FAILURE);
+	// xxx
 	if (access(args[0], F_OK | X_OK) == 0)
 	{
 		if(execve(args[0], args, env) == -1)
-			status = CMD_EXEC_ERROR;
+			ft_exit_failure("Something went wrong!", MALLOC, EXIT_FAILURE);
 		else
-			status = CMD_SUCCESS;
+			ft_exit_success(CMD_SUCCESS);
 	}
 	else
-		status = CMD_FAIL;
+		ft_exit_failure(cmd, COMMAND, EXIT_CMD_NOT_EXECUTABLE);
 }
 
 void	ft_pip_f_process(char *cmd, int fd, int pip[2], char **env)
 {
-	int	status;
 	int	pid;
 
 	pid = fork();
@@ -95,20 +90,17 @@ void	ft_pip_f_process(char *cmd, int fd, int pip[2], char **env)
 		ft_exit_failure(NULL, FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
-		dup2(fd, STDIN_FILENO);
-		dup2(pip[1], STDOUT_FILENO);
-		close(fd);
-		close(pip[0]);
-		close(pip[1]);
+		if (dup2(fd, STDIN_FILENO) == -1)
+			ft_exit_failure("infile", DUP2, EXIT_FAILURE);
+		if (dup2(pip[1], STDOUT_FILENO) == -1)
+			ft_exit_failure("pipe write", DUP2, EXIT_FAILURE);
+		ft_close_fd(fd, '\0', pip);
 		ft_pip_execve(cmd, env);
-		if (status == CMD_FAIL || status == CMD_EXEC_ERROR)
-			cmd_error_handling(cmd);
 	}
 }
 
 void	ft_pip_s_process(char *cmd, int fd, int pip[2], char **env)
 {
-	int	status;
 	int	pid;
 
 	pid = fork();
@@ -116,13 +108,11 @@ void	ft_pip_s_process(char *cmd, int fd, int pip[2], char **env)
 		ft_exit_failure(NULL, FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
-		dup2(pip[0], STDIN_FILENO);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-		close(pip[0]);
-		close(pip[1]);
+		if (dup2(pip[0], STDIN_FILENO) == -1)
+			ft_exit_failure("pipe read", DUP2, EXIT_FAILURE);
+		if (dup2(fd, STDOUT_FILENO) == -1)
+			ft_exit_failure("outfile", DUP2, EXIT_FAILURE);
+		ft_close_fd('\0', fd, pip);
 		ft_pip_execve(cmd, env);
-		if (status == CMD_FAIL || status == CMD_EXEC_ERROR)
-			cmd_error_handling(cmd);
 	}
 }

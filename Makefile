@@ -1,6 +1,6 @@
 NAME = pipex
 
-SRCS = main.c error.c pip_check.c pip_process.c
+SRCS = main.c error.c pip_check.c pip_process.c pip_utils.c
 
 OBJS = $(SRCS:.c=.o)
 

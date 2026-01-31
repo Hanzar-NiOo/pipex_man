@@ -16,9 +16,9 @@
 #  define BUFFER_SIZE 42
 # endif
 
-// # define STDIN 0
-// # define STDOUT 1
-// # define STDERR 2
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
 
 # define CMD_SUCCESS 1
 # define CMD_FAIL 0
@@ -45,13 +45,14 @@ typedef enum s_error
 # include <sys/wait.h>
 # include "libft.h"
 
-// # include <stdio.h>
+# include <stdio.h>
 
 void	ft_log_error(char *str, t_error type);
 void	ft_exit_failure(char *str, t_error type, int code);
 void	cmd_error_handling(char *cmd);
 void	ft_log_guide_instructions(void);
-
+void	ft_exit_success(int code);
+void	ft_close_fd(int fd_in, int fd_out, int pip[2]);
 // void	ft_err_exit(char *err_msg);
 int		ft_argc_check(int argc);
 int		ft_invalid_cmd_arg(char *cmd);

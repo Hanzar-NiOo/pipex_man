@@ -12,27 +12,17 @@
 
 #include "pipex.h"
 
-void	ft_err_exit(char *err_msg)
-{
-	write (2, "error\n", 6);
-	write (2, err_msg, ft_strlen(err_msg));
-	write (2, "\n", 1);
-	exit (1);
-}
-
 void	ft_exit_failure(char *str, t_error type, int code)
 {
 	ft_log_error(str, type);
-	// close_fd(data);
-	// free_char_double_pointer(data->path);
+	// Need to close fds
 	exit(code);
 }
 
-// void	exit_success(t_pipex *data, int code)
-// {
-// 	close_and_free(data);
-// 	exit(code);
-// }
+void	ft_exit_success(int code)
+{
+	exit(code);
+}
 
 void	ft_log_error(char *str, t_error type)
 {
@@ -59,21 +49,21 @@ void	ft_log_error(char *str, t_error type)
 		ft_putstr_fd(": dup2() failed on child_process()\n", 2);
 }
 
-void	cmd_error_handling(char *cmd)
-{
-	if (access(cmd, F_OK) == -1)
-	{
-		if (ft_strchr(cmd, '/'))
-			exit_failure(cmd, EXISTENCE, EXIT_CMD_NOT_FOUND);
-		else
-			exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
-	}
-	if (access(cmd, X_OK) == 0 && ft_strchr(cmd, '/'))
-		exit_failure(cmd, DIRECTORY, EXIT_CMD_NOT_EXECUTABLE);
-	else if (access(cmd, X_OK) == 0 && !ft_strchr(cmd, '/'))
-		exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
-	exit_failure(cmd, PERMISSION, EXIT_CMD_NOT_EXECUTABLE);
-}
+// void	cmd_error_handling(char *cmd)
+// {
+// 	if (access(cmd, F_OK) == -1)
+// 	{
+// 		if (ft_strchr(cmd, '/'))
+// 			exit_failure(cmd, EXISTENCE, EXIT_CMD_NOT_FOUND);
+// 		else
+// 			exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
+// 	}
+// 	if (access(cmd, X_OK) == 0 && ft_strchr(cmd, '/'))
+// 		exit_failure(cmd, DIRECTORY, EXIT_CMD_NOT_EXECUTABLE);
+// 	else if (access(cmd, X_OK) == 0 && !ft_strchr(cmd, '/'))
+// 		exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
+// 	exit_failure(cmd, PERMISSION, EXIT_CMD_NOT_EXECUTABLE);
+// }
 
 void	ft_log_guide_instructions(void)
 {
