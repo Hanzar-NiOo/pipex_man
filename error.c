@@ -45,37 +45,35 @@ void	ft_log_error(char *str, t_error type)
 		ft_putstr_fd(": memory allocation failed\n", 2);
 	if (type == EXISTENCE)
 		ft_putstr_fd(": No such file or directory\n", 2);
-	// if (type == PERMISSION)
-	// 	ft_putstr_fd(": Permission denied\n", STDERR);
+	if (type == PERMISSION)
+		ft_putstr_fd(": Permission denied\n", 2);
 	if (type == COMMAND)
 		ft_putstr_fd(": command not found\n", 2);
-	// if (type == DIRECTORY)
-	// 	ft_putstr_fd(": Is a directory\n", STDERR);
+	if (type == DIRECTORY)
+		ft_putstr_fd(": Is a directory\n", 2);
 	if (type == PIPE)
 		ft_putstr_fd(": pipe() failed on get_pipe_fd()\n", 2);
 	if (type == FORK)
 		ft_putstr_fd(": fork() failed on pipex()\n", 2);
-	// if (type == DUP2)
-	// 	ft_putstr_fd(": dup2() failed on child_process()\n", STDERR);
+	if (type == DUP2)
+		ft_putstr_fd(": dup2() failed on child_process()\n", 2);
 }
 
-// void	cmd_error_handling(t_pipex *data, char *cmd)
-// {
-// 	if (data->path == NULL)
-// 		exit_failure(data, cmd, EXISTENCE, EXIT_CMD_NOT_FOUND);
-// 	if (access(cmd, F_OK) == -1)
-// 	{
-// 		if (ft_strchr(cmd, '/'))
-// 			exit_failure(data, cmd, EXISTENCE, EXIT_CMD_NOT_FOUND);
-// 		else
-// 			exit_failure(data, cmd, COMMAND, EXIT_CMD_NOT_FOUND);
-// 	}
-// 	if (access(cmd, X_OK) == 0 && ft_strchr(cmd, '/'))
-// 		exit_failure(data, cmd, DIRECTORY, EXIT_CMD_NOT_EXECUTABLE);
-// 	else if (access(cmd, X_OK) == 0 && !ft_strchr(cmd, '/'))
-// 		exit_failure(data, cmd, COMMAND, EXIT_CMD_NOT_FOUND);
-// 	exit_failure(data, cmd, PERMISSION, EXIT_CMD_NOT_EXECUTABLE);
-// }
+void	cmd_error_handling(char *cmd)
+{
+	if (access(cmd, F_OK) == -1)
+	{
+		if (ft_strchr(cmd, '/'))
+			exit_failure(cmd, EXISTENCE, EXIT_CMD_NOT_FOUND);
+		else
+			exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
+	}
+	if (access(cmd, X_OK) == 0 && ft_strchr(cmd, '/'))
+		exit_failure(cmd, DIRECTORY, EXIT_CMD_NOT_EXECUTABLE);
+	else if (access(cmd, X_OK) == 0 && !ft_strchr(cmd, '/'))
+		exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
+	exit_failure(cmd, PERMISSION, EXIT_CMD_NOT_EXECUTABLE);
+}
 
 void	ft_log_guide_instructions(void)
 {

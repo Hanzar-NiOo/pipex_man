@@ -33,11 +33,11 @@ typedef enum s_error
 	MALLOC,
 	PIPE,
 	FORK,
-	// DUP2,
+	DUP2,
 	EXISTENCE,
-	// PERMISSION,	
+	PERMISSION,
 	COMMAND,
-	// DIRECTORY,
+	DIRECTORY,
 }	t_error;
 
 # include <unistd.h>
@@ -49,7 +49,9 @@ typedef enum s_error
 
 void	ft_log_error(char *str, t_error type);
 void	ft_exit_failure(char *str, t_error type, int code);
+void	cmd_error_handling(char *cmd);
 void	ft_log_guide_instructions(void);
+
 // void	ft_err_exit(char *err_msg);
 int		ft_argc_check(int argc);
 int		ft_invalid_cmd_arg(char *cmd);

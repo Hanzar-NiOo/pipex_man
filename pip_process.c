@@ -50,19 +50,16 @@ static char	*ft_get_execve(char *cmd, char **paths)
 		exec = ft_strjoin(tmp, cmd);
 		if (access(ft_strjoin(tmp, cmd), F_OK | X_OK) == 0)
 			return (exec);
-		// else
-			// cmd_fail
 		idx++;
 	}
 	if (!exec)
 		ft_exit_failure(NULL, COMMAND, EXIT_FAILURE);
-	// exit_failure(data, "ft_split() on get_abs_path()",
-	// 	MALLOC, EXIT_FAILURE);
 	return (NULL);
 }
 
-static void	ft_pip_execve(char *cmd, char **env)
+static int	ft_pip_execve(char *cmd, char **env)
 {
+	int		status;
 	char	**args;
 	char	**paths;
 
@@ -74,19 +71,23 @@ static void	ft_pip_execve(char *cmd, char **env)
 	args = ft_split(cmd, ' ');
 	if (!args)
 		exit_failure("ft_split() on execute_command()", MALLOC, EXIT_FAILURE);
-	// else
-	// error exit
 	args[0] = ft_get_execve(args[0], paths);
 	if (args[0])
 		exit_failure("ft_split() on absolute", MALLOC, EXIT_FAILURE);
-		// status = CMD_EXEC_ERROR;
-	// if (execv() == -1)
-	execve(args[0], args, env);
-	// status = CMD_STATUS;
+	if (access(args[0], F_OK | X_OK) == 0)
+	{
+		if(execve(args[0], args, env) == -1)
+			status = CMD_EXEC_ERROR;
+		else
+			status = CMD_SUCCESS;
+	}
+	else
+		status = CMD_FAIL;
 }
 
 void	ft_pip_f_process(char *cmd, int fd, int pip[2], char **env)
 {
+	int	status;
 	int	pid;
 
 	pid = fork();
@@ -100,11 +101,14 @@ void	ft_pip_f_process(char *cmd, int fd, int pip[2], char **env)
 		close(pip[0]);
 		close(pip[1]);
 		ft_pip_execve(cmd, env);
+		if (status == CMD_FAIL || status == CMD_EXEC_ERROR)
+			cmd_error_handling(cmd);
 	}
 }
 
 void	ft_pip_s_process(char *cmd, int fd, int pip[2], char **env)
 {
+	int	status;
 	int	pid;
 
 	pid = fork();
@@ -118,5 +122,7 @@ void	ft_pip_s_process(char *cmd, int fd, int pip[2], char **env)
 		close(pip[0]);
 		close(pip[1]);
 		ft_pip_execve(cmd, env);
+		if (status == CMD_FAIL || status == CMD_EXEC_ERROR)
+			cmd_error_handling(cmd);
 	}
 }
