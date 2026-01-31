@@ -22,7 +22,7 @@ void	argc_check(int argc)
 	}
 }
 
-int	invalid_cmd_arg(char *cmd)
+int	valid_cmd_arg(char *cmd)
 {
 	int	i;
 

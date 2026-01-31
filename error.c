@@ -18,11 +18,6 @@ void	exit_failure(char *str, t_error type, int code)
 	exit(code);
 }
 
-void	exit_success(int code)
-{
-	exit(code);
-}
-
 void	log_error(char *str, t_error type)
 {
 	ft_putstr_fd("pipex: ", 2);

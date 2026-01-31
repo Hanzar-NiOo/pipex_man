@@ -58,24 +58,29 @@ static void	pip_execve(char *cmd, char **env)
 	char	**args;
 	char	**paths;
 
-	if (ft_invalid_cmd_arg(cmd))
-		ft_exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
+	if (!valid_cmd_arg(cmd))
+		exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
 	paths = get_paths(env);
 	if (!paths)
-		exit_failure("ft_split() on ft_get_paths()", MALLOC, EXIT_FAILURE);
+		exit_failure("ft_split() on get_paths()", MALLOC, EXIT_FAILURE);
 	args = ft_split(cmd, ' ');
 	if (!args)
 		exit_failure("ft_split()", MALLOC, EXIT_FAILURE);
 	args[0] = get_execve(args[0], paths);
 	if (!args[0])
-		exit_failure(NULL, COMMAND, EXIT_FAILURE);
+		exit_failure("ft_strjoin()", MALLOC, EXIT_FAILURE);
 	// xxx
-	if (access(args[0], F_OK | X_OK) == 0)
+	if (access(args[0], F_OK) == 0)
 	{
-		if(execve(args[0], args, env) == -1)
-			exit_failure("Something went wrong!", MALLOC, EXIT_FAILURE);
+		if (access(args[0], X_OK) == 0)
+		{
+			if(execve(args[0], args, env) == -1)
+				exit_failure(cmd, PERMISSION, EXIT_CMD_NOT_EXECUTABLE);
+			else
+				exit_success(CMD_SUCCESS);
+		}
 		else
-			exit_success(CMD_SUCCESS);
+			exit_failure(cmd, COMMAND, EXIT_CMD_NOT_EXECUTABLE);
 	}
 	else
 		exit_failure(cmd, COMMAND, EXIT_CMD_NOT_EXECUTABLE);
