@@ -18,18 +18,18 @@ int	main(int argc, char **argv, char **env)
 	int	fd_infile;
 	int	fd_outfile;
 
-	ft_argc_check(argc);
+	argc_check(argc);
 	fd_infile = open(argv[1], O_RDONLY);
 	if (fd_infile == -1)
-		ft_exit_failure(argv[1], EXISTENCE, EXIT_FAILURE);
+		exit_failure(argv[1], EXISTENCE, EXIT_FAILURE);
 	fd_outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_outfile == -1)
-		ft_exit_failure(argv[4], EXISTENCE, EXIT_FAILURE);
+		exit_failure(argv[4], EXISTENCE, EXIT_FAILURE);
 	if (pipe(pip) == -1)
-		ft_exit_failure(NULL, PIPE, EXIT_FAILURE);
-	ft_pip_f_process(argv[2], fd_infile, pip, env);
-	ft_pip_s_process(argv[3], fd_outfile, pip, env);
-	ft_close_fd(fd_infile, fd_outfile, pip);
+		exit_failure(NULL, PIPE, EXIT_FAILURE);
+	pip_f_process(argv[2], fd_infile, pip, env);
+	pip_s_process(argv[3], fd_outfile, pip, env);
+	close_fd(fd_infile, fd_outfile, pip);
 	wait(NULL);
 	wait(NULL);
 	return (0);

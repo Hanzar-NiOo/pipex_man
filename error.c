@@ -12,19 +12,19 @@
 
 #include "pipex.h"
 
-void	ft_exit_failure(char *str, t_error type, int code)
+void	exit_failure(char *str, t_error type, int code)
 {
-	ft_log_error(str, type);
+	log_error(str, type);
 	// Need to close fds
 	exit(code);
 }
 
-void	ft_exit_success(int code)
+void	exit_success(int code)
 {
 	exit(code);
 }
 
-void	ft_log_error(char *str, t_error type)
+void	log_error(char *str, t_error type)
 {
 	ft_putstr_fd("pipex: ", 2);
 	if (str)
@@ -65,7 +65,7 @@ void	ft_log_error(char *str, t_error type)
 // 	exit_failure(cmd, PERMISSION, EXIT_CMD_NOT_EXECUTABLE);
 // }
 
-void	ft_log_guide_instructions(void)
+void	log_guide_instructions(void)
 {
 	ft_putstr_fd("\nThis is how to execute the program:"
 		"\n\t./pipex <file1> <cmd1> <cmd2> <file2>\n"

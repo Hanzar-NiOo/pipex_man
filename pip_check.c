@@ -12,17 +12,17 @@
 
 #include "pipex.h"
 
-int	ft_argc_check(int argc)
+int	argc_check(int argc)
 {
 	if (argc != 5)
 	{
-		ft_log_error("Error", ARGUMENTS);
-		ft_log_guide_instructions();
+		log_error("Error", ARGUMENTS);
+		log_guide_instructions();
 	}
 	return (1);
 }
 
-int	ft_invalid_cmd_arg(char *cmd)
+int	invalid_cmd_arg(char *cmd)
 {
 	int	i;
 

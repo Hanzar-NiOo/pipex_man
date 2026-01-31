@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void	ft_close_fd(int fd_in, int fd_out, int pip[2])
+void	close_fd(int fd_in, int fd_out, int pip[2])
 {
 	if (fd_in)
 		close(fd_in);

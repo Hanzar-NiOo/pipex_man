@@ -47,16 +47,16 @@ typedef enum s_error
 
 # include <stdio.h>
 
-void	ft_log_error(char *str, t_error type);
-void	ft_exit_failure(char *str, t_error type, int code);
+void	log_error(char *str, t_error type);
+void	exit_failure(char *str, t_error type, int code);
 void	cmd_error_handling(char *cmd);
-void	ft_log_guide_instructions(void);
-void	ft_exit_success(int code);
-void	ft_close_fd(int fd_in, int fd_out, int pip[2]);
+void	log_guide_instructions(void);
+void	exit_success(int code);
+void	close_fd(int fd_in, int fd_out, int pip[2]);
 // void	ft_err_exit(char *err_msg);
-int		ft_argc_check(int argc);
-int		ft_invalid_cmd_arg(char *cmd);
-void	ft_pip_f_process(char *cmd, int fd, int pip[2], char **env);
-void	ft_pip_s_process(char *cmd, int fd, int pip2[2], char **env);
+int		argc_check(int argc);
+int		invalid_cmd_arg(char *cmd);
+void	pip_f_process(char *cmd, int fd, int pip[2], char **env);
+void	pip_s_process(char *cmd, int fd, int pip2[2], char **env);
 
 #endif
