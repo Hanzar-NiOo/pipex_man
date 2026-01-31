@@ -26,13 +26,13 @@ static char	**ft_get_paths(char **env)
 		{
 			tmp = ft_strtrim(env[idx], "PATH=");
 			paths = ft_split(tmp, ':');
-			break ;
+			return (paths);
 		}
 		idx++;
 	}
-	// if (!paths)
-	// 	ft_err_exit ("Env : Paths not found");
-	return (paths);
+	if (!paths)
+		ft_log_error("ft_split() from get_path()", MALLOC);
+	return (NULL);
 }
 
 static char	*ft_get_execve(char *cmd, char **paths)
@@ -48,12 +48,16 @@ static char	*ft_get_execve(char *cmd, char **paths)
 	{
 		tmp = ft_strjoin(paths[idx], "/");
 		exec = ft_strjoin(tmp, cmd);
-		if (access(ft_strjoin(tmp, cmd), X_OK) == 0)
+		if (access(ft_strjoin(tmp, cmd), F_OK | X_OK) == 0)
 			return (exec);
+		// else
+			// cmd_fail
 		idx++;
 	}
-	// if (!exec)
-	// 	ft_err_exit ("Pipex : Command not found");
+	if (!exec)
+		ft_exit_failure(NULL, COMMAND, EXIT_FAILURE);
+	// exit_failure(data, "ft_split() on get_abs_path()",
+	// 	MALLOC, EXIT_FAILURE);
 	return (NULL);
 }
 
@@ -63,9 +67,22 @@ static void	ft_pip_execve(char *cmd, char **env)
 	char	**paths;
 
 	paths = ft_get_paths(env);
+	if (!paths)
+		exit_failure("ft_split() on get_abs_path()", MALLOC, EXIT_FAILURE);
+	if (ft_invalid_cmd_arg(cmd))
+		exit_failure(cmd, COMMAND, EXIT_CMD_NOT_FOUND);
 	args = ft_split(cmd, ' ');
+	if (!args)
+		exit_failure("ft_split() on execute_command()", MALLOC, EXIT_FAILURE);
+	// else
+	// error exit
 	args[0] = ft_get_execve(args[0], paths);
+	if (args[0])
+		exit_failure("ft_split() on absolute", MALLOC, EXIT_FAILURE);
+		// status = CMD_EXEC_ERROR;
+	// if (execv() == -1)
 	execve(args[0], args, env);
+	// status = CMD_STATUS;
 }
 
 void	ft_pip_f_process(char *cmd, int fd, int pip[2], char **env)
@@ -73,8 +90,8 @@ void	ft_pip_f_process(char *cmd, int fd, int pip[2], char **env)
 	int	pid;
 
 	pid = fork();
-	// if (pid < 0)
-	// 	ft_err_exit("Fork : Resource temporarily unavailable");
+	if (pid < 0)
+		ft_exit_failure(NULL, FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
 		dup2(fd, STDIN_FILENO);
@@ -91,8 +108,8 @@ void	ft_pip_s_process(char *cmd, int fd, int pip[2], char **env)
 	int	pid;
 
 	pid = fork();
-	// if (pid < 0)
-	// 	ft_err_exit("Fork : Resource temporarily unavailable");
+	if (pid < 0)
+		ft_exit_failure(NULL, FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
 		dup2(pip[0], STDIN_FILENO);

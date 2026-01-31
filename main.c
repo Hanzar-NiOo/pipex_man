@@ -25,8 +25,8 @@ int	main(int argc, char **argv, char **env)
 	fd_outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_outfile == -1)
 		ft_exit_failure(argv[4], EXISTENCE, EXIT_FAILURE);
-	// if (pipe(pip) == -1)
-	// 	ft_err_exit("Pipe : Pipe failed");
+	if (pipe(pip) == -1)
+		ft_exit_failure(NULL, PIPE, EXIT_FAILURE);
 	ft_pip_f_process(argv[2], fd_infile, pip, env);
 	ft_pip_s_process(argv[3], fd_outfile, pip, env);
 	close(pip[0]);

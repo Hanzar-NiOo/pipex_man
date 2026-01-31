@@ -41,20 +41,20 @@ void	ft_log_error(char *str, t_error type)
 		ft_putstr_fd(str, 2);
 	if (type == ARGUMENTS)
 		ft_putstr_fd(": Incorrect number of arguments\n", 2);
-	// if (type == MALLOC)
-	// 	ft_putstr_fd(": memory allocation failed\n", STDERR);
+	if (type == MALLOC)
+		ft_putstr_fd(": memory allocation failed\n", 2);
 	if (type == EXISTENCE)
 		ft_putstr_fd(": No such file or directory\n", 2);
 	// if (type == PERMISSION)
 	// 	ft_putstr_fd(": Permission denied\n", STDERR);
-	// if (type == COMMAND)
-	// 	ft_putstr_fd(": command not found\n", STDERR);
+	if (type == COMMAND)
+		ft_putstr_fd(": command not found\n", 2);
 	// if (type == DIRECTORY)
 	// 	ft_putstr_fd(": Is a directory\n", STDERR);
-	// if (type == PIPE)
-	// 	ft_putstr_fd(": pipe() failed on get_pipe_fd()\n", STDERR);
-	// if (type == FORK)
-	// 	ft_putstr_fd(": fork() failed on pipex()\n", STDERR);
+	if (type == PIPE)
+		ft_putstr_fd(": pipe() failed on get_pipe_fd()\n", 2);
+	if (type == FORK)
+		ft_putstr_fd(": fork() failed on pipex()\n", 2);
 	// if (type == DUP2)
 	// 	ft_putstr_fd(": dup2() failed on child_process()\n", STDERR);
 }

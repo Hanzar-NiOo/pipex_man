@@ -21,3 +21,19 @@ int	ft_argc_check(int argc)
 	}
 	return (1);
 }
+
+int	ft_invalid_cmd_arg(char *cmd)
+{
+	int	i;
+
+	if (!cmd || cmd[0] == '\0')
+		return (1);
+	i = 0;
+	while (cmd[i])
+	{
+		if (ft_isprint(cmd[i]) && !ft_iswhitespace(cmd[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
