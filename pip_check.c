@@ -12,14 +12,14 @@
 
 #include "pipex.h"
 
-int	argc_check(int argc)
+void	argc_check(int argc)
 {
 	if (argc != 5)
 	{
 		log_error("Error", ARGUMENTS);
 		log_guide_instructions();
+		exit(EXIT_FAILURE);
 	}
-	return (1);
 }
 
 int	invalid_cmd_arg(char *cmd)

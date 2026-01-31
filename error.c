@@ -15,7 +15,6 @@
 void	exit_failure(char *str, t_error type, int code)
 {
 	log_error(str, type);
-	// Need to close fds
 	exit(code);
 }
 

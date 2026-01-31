@@ -54,7 +54,7 @@ void	log_guide_instructions(void);
 void	exit_success(int code);
 void	close_fd(int fd_in, int fd_out, int pip[2]);
 // void	ft_err_exit(char *err_msg);
-int		argc_check(int argc);
+void	argc_check(int argc);
 int		invalid_cmd_arg(char *cmd);
 void	pip_f_process(char *cmd, int fd, int pip[2], char **env);
 void	pip_s_process(char *cmd, int fd, int pip2[2], char **env);
