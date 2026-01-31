@@ -43,7 +43,7 @@ void	log_error(char *str, t_error type)
 	if (type == PIPE)
 		ft_putstr_fd(": pipe() failed on get_pipe_fd()\n", 2);
 	if (type == FORK)
-		ft_putstr_fd(": fork() failed on pipex()\n", 2);
+		ft_putstr_fd(": fork() failed in pip_process.c\n", 2);
 	if (type == DUP2)
 		ft_putstr_fd(": dup2() failed on child_process()\n", 2);
 }
